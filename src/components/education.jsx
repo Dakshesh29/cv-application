@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { Plus, Trash2, Edit, Save, X } from "lucide-react";
+import { InputField } from "./common/InputField.jsx";
+import { Button } from "./common/Button.jsx";
 
 function Education() {
   const [formData, setFormData] = useState({
@@ -9,16 +12,13 @@ function Education() {
     cgpa: "8.5",
   });
 
+  const [originalData, setOriginalData] = useState(formData);
   const [isEditing, setIsEditing] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  const [originalData, setOriginalData] = useState(formData);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleEdit = () => {
@@ -37,106 +37,106 @@ function Education() {
   };
 
   const handleToggleVisibility = () => {
-    setIsVisible(!isVisible);
+    setIsVisible((prev) => !prev);
   };
 
   if (!isVisible) {
     return (
-      <div className="education-section">
-        <button onClick={handleToggleVisibility}>Add Education Section</button>
+      <div className="education-section education-hidden">
+        <Button
+          onClick={handleToggleVisibility}
+          variant="primary"
+          icon={<Plus size={18} />}
+        >
+          Add Education Section
+        </Button>
       </div>
     );
   }
 
   return (
     <div className="education-section">
-      <h2>Education</h2>
-
       {isEditing ? (
-        <form onSubmit={handleSubmit}>
-          <label>Institution</label>
-          <input
-            type="text"
+        <form onSubmit={handleSubmit} className="form-layout">
+          <InputField
+            label="Institution"
             name="institution"
             value={formData.institution}
             onChange={handleChange}
           />
-
-          <label>Location</label>
-          <input
-            type="text"
+          <InputField
+            label="Location"
             name="location"
             value={formData.location}
             onChange={handleChange}
           />
-
-          <label>Degree</label>
-          <input
-            type="text"
+          <InputField
+            label="Degree"
             name="degree"
             value={formData.degree}
             onChange={handleChange}
           />
-
-          <label>Date Range</label>
-          <input
-            type="text"
+          <InputField
+            label="Date Range"
             name="dateRange"
             value={formData.dateRange}
             onChange={handleChange}
           />
-
-          <label>CGPA</label>
-          <input
-            type="text"
+          <InputField
+            label="CGPA"
             name="cgpa"
             value={formData.cgpa}
             onChange={handleChange}
           />
 
-          <div style={{ marginTop: "1rem" }}>
-            <button type="submit">Save</button>
-            <button
+          <div className="form-actions">
+            <Button type="submit" variant="primary" icon={<Save size={18} />}>
+              Save
+            </Button>
+            <Button
               type="button"
+              variant="secondary"
               onClick={handleCancel}
-              style={{ marginLeft: "0.5rem" }}
+              icon={<X size={18} />}
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
+              variant="danger"
               onClick={handleToggleVisibility}
-              style={{ marginLeft: "0.5rem" }}
+              icon={<Trash2 size={18} />}
             >
               Remove Section
-            </button>
+            </Button>
           </div>
         </form>
       ) : (
         <div className="education-display">
-          <p>
-            <strong>Institution:</strong> {formData.institution}
+          <p className="education-degree-institution">
+            {formData.degree} from {formData.institution}
           </p>
-          <p>
-            <strong>Location:</strong> {formData.location}
+          <p className="education-location-date">
+            {formData.location} | {formData.dateRange}
           </p>
-          <p>
-            <strong>Degree:</strong> {formData.degree}
-          </p>
-          <p>
-            <strong>Date Range:</strong> {formData.dateRange}
-          </p>
-          <p>
-            <strong>CGPA:</strong> {formData.cgpa}
-          </p>
+          <p className="education-cgpa">CGPA: {formData.cgpa}</p>
 
-          <button onClick={handleEdit}>Edit</button>
-          <button
-            onClick={handleToggleVisibility}
-            style={{ marginLeft: "0.5rem" }}
-          >
-            Remove Section
-          </button>
+          <div className="display-actions">
+            <Button
+              onClick={handleEdit}
+              variant="secondary"
+              icon={<Edit size={18} />}
+            >
+              Edit
+            </Button>
+            <Button
+              onClick={handleToggleVisibility}
+              variant="danger"
+              icon={<Trash2 size={18} />}
+            >
+              Remove Section
+            </Button>
+          </div>
         </div>
       )}
     </div>

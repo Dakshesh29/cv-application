@@ -1,15 +1,19 @@
 import { useState } from "react";
+import { Edit, Save, X } from "lucide-react";
+import { InputField } from "./common/InputField.jsx";
+import { TextareaField } from "./common/TextareaField.jsx";
+import { Button } from "./common/Button.jsx";
 
 function Projects() {
   const [project, setProject] = useState({
     title: "Resume Builder App",
     link: "https://github.com/demo/resume-builder",
     description:
-      "A dynamic CV builder with live preview and edit features using React.",
+      "Developed a dynamic CV builder with live preview and edit features using React. Implemented responsive design for optimal viewing on various devices.",
   });
 
-  const [isEditing, setIsEditing] = useState(false);
   const [originalData, setOriginalData] = useState(project);
+  const [isEditing, setIsEditing] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,46 +36,70 @@ function Projects() {
   };
 
   return (
-    <div>
-      <h2>Project</h2>
+    <div className="project-section">
       {isEditing ? (
-        <form onSubmit={handleSubmit}>
-          <input
+        <form onSubmit={handleSubmit} className="form-layout">
+          <InputField
+            label="Project Title"
             name="title"
             value={project.title}
             onChange={handleChange}
-            placeholder="Project Title"
+            placeholder="e.g., My Awesome Project"
           />
-          <input
+          <InputField
+            label="Project Link"
             name="link"
             value={project.link}
             onChange={handleChange}
-            placeholder="Project Link"
+            placeholder="e.g., https://github.com/your-username/your-project"
+            type="url"
           />
-          <textarea
+          <TextareaField
+            label="Description"
             name="description"
             value={project.description}
             onChange={handleChange}
-            placeholder="Description"
+            placeholder="Brief description of your project..."
           />
 
-          <button type="submit">Save</button>
-          <button type="button" onClick={handleCancel}>
-            Cancel
-          </button>
+          <div className="form-actions">
+            <Button type="submit" variant="primary" icon={<Save size={18} />}>
+              Save
+            </Button>
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={handleCancel}
+              icon={<X size={18} />}
+            >
+              Cancel
+            </Button>
+          </div>
         </form>
       ) : (
-        <div>
-          <p>
-            <strong>{project.title}</strong>
-          </p>
-          <p>
-            <a href={project.link} target="_blank" rel="noopener noreferrer">
+        <div className="project-display">
+          <p className="project-title-text">{project.title}</p>
+          <p className="project-link-text">
+            <a
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link-style"
+            >
               {project.link}
             </a>
           </p>
-          <p>{project.description}</p>
-          <button onClick={handleEdit}>Edit</button>
+          <p className="project-description">{project.description}</p>
+
+          <div className="display-actions">
+            <Button
+              onClick={handleEdit}
+              variant="secondary"
+              icon={<Edit size={18} />}
+            >
+              Edit
+            </Button>
+          </div>
         </div>
       )}
     </div>

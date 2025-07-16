@@ -1,24 +1,35 @@
 import { useState } from "react";
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Linkedin,
+  Github,
+  Edit,
+  Save,
+  X,
+} from "lucide-react";
+
+import { InputField } from "./common/InputField.jsx";
+import { Button } from "./common/Button.jsx";
+import { InfoItem } from "./common/InfoItem.jsx";
 
 function PersonalInfo() {
   const [formData, setFormData] = useState({
-    name: "Jane Doe",
+    name: "Jack Denial",
     location: "San Francisco, CA",
     phone: "123-456-7890",
-    email: "janedoe@example.com",
-    linkedinLink: "https://linkedin.com/in/janedoe",
-    githubLink: "https://github.com/janedoe",
+    email: "jackdenial@example.com",
+    linkedinLink: "https://linkedin.com/in/jackdenial",
+    githubLink: "https://github.com/jackdenial",
   });
 
-  const [isEditing, setIsEditing] = useState(false);
   const [originalData, setOriginalData] = useState(formData);
+  const [isEditing, setIsEditing] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleEdit = () => {
@@ -26,114 +37,127 @@ function PersonalInfo() {
     setIsEditing(true);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleCancel = () => {
+    setFormData(originalData);
     setIsEditing(false);
   };
 
-  const handleCancel = () => {
-    setFormData(originalData);
+  const handleSubmit = (e) => {
+    e.preventDefault();
     setIsEditing(false);
   };
 
   return (
     <div className="personal-info-section">
       {isEditing ? (
-        <form onSubmit={handleSubmit}>
-          <label>Name:</label>
-          <input
-            type="text"
+        <form onSubmit={handleSubmit} className="form-layout">
+          <InputField
+            label="Name"
             name="name"
+            type="text"
             value={formData.name}
             onChange={handleChange}
           />
-
-          <label>Location:</label>
-          <input
-            type="text"
+          <InputField
+            label="Location"
             name="location"
+            type="text"
             value={formData.location}
             onChange={handleChange}
           />
-
-          <label>Phone:</label>
-          <input
-            type="tel"
+          <InputField
+            label="Phone"
             name="phone"
+            type="tel"
             value={formData.phone}
             onChange={handleChange}
           />
-
-          <label>Email:</label>
-          <input
-            type="email"
+          <InputField
+            label="Email"
             name="email"
+            type="email"
             value={formData.email}
             onChange={handleChange}
           />
-
-          <label>LinkedIn:</label>
-          <input
-            type="text"
+          <InputField
+            label="LinkedIn URL"
             name="linkedinLink"
+            type="url"
             value={formData.linkedinLink}
             onChange={handleChange}
           />
-
-          <label>GitHub:</label>
-          <input
-            type="text"
+          <InputField
+            label="GitHub URL"
             name="githubLink"
+            type="url"
             value={formData.githubLink}
             onChange={handleChange}
           />
 
-          <div style={{ marginTop: "1rem" }}>
-            <button type="submit">Save</button>
-            <button
+          <div className="form-actions">
+            <Button type="submit" variant="primary" icon={<Save size={18} />}>
+              Save
+            </Button>
+            <Button
               type="button"
+              variant="secondary"
+              icon={<X size={18} />}
               onClick={handleCancel}
-              style={{ marginLeft: "0.5rem" }}
             >
               Cancel
-            </button>
+            </Button>
           </div>
         </form>
       ) : (
         <div className="personal-info-display">
-          <p>
-            <strong>Name:</strong> {formData.name}
-          </p>
-          <p>
-            <strong>Location:</strong> {formData.location}
-          </p>
-          <p>
-            <strong>Phone:</strong> {formData.phone}
-          </p>
-          <p>
-            <strong>Email:</strong> {formData.email}
-          </p>
-          <p>
-            <strong>LinkedIn:</strong>{" "}
-            <a
-              href={formData.linkedinLink}
-              target="_blank"
-              rel="noopener noreferrer"
+          <p className="personal-info-name">{formData.name}</p>
+
+          <InfoItem icon={<MapPin size={18} />} text={formData.location} />
+          <InfoItem icon={<Phone size={18} />} text={formData.phone} />
+          <InfoItem
+            icon={<Mail size={18} />}
+            text={
+              <a href={`mailto:${formData.email}`} className="link-style">
+                {formData.email}
+              </a>
+            }
+          />
+          <InfoItem
+            icon={<Linkedin size={18} />}
+            text={
+              <a
+                href={formData.linkedinLink}
+                className="link-style"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {formData.linkedinLink}
+              </a>
+            }
+          />
+          <InfoItem
+            icon={<Github size={18} />}
+            text={
+              <a
+                href={formData.githubLink}
+                className="link-style"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {formData.githubLink}
+              </a>
+            }
+          />
+
+          <div className="display-actions">
+            <Button
+              onClick={handleEdit}
+              variant="secondary"
+              icon={<Edit size={18} />}
             >
-              {formData.linkedinLink}
-            </a>
-          </p>
-          <p>
-            <strong>GitHub:</strong>{" "}
-            <a
-              href={formData.githubLink}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {formData.githubLink}
-            </a>
-          </p>
-          <button onClick={handleEdit}>Edit</button>
+              Edit
+            </Button>
+          </div>
         </div>
       )}
     </div>

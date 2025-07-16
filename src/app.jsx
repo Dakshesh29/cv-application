@@ -1,29 +1,38 @@
-import { PersonalInfo } from "./components/personalinfo.jsx";
-import { Education } from "./components/education.jsx";
-import { Experience } from "./components/experience.jsx";
-import { Projects } from "./components/projects.jsx";
-import { Skills } from "./components/skills.jsx";
+import { PersonalInfo } from "./components/PersonalInfo.jsx";
+import { Education } from "./components/Education.jsx";
+import { Experience } from "./components/Experience.jsx";
+import { Projects } from "./components/Projects.jsx";
+import { Skills } from "./components/Skills.jsx";
+import { Section } from "./components/common/Section.jsx";
 
-function App() {
+import "./styles.css";
+
+export default function App() {
   return (
-    <div className="cv-container">
-      <div className="section">
-        <PersonalInfo />
-      </div>
-      <div className="section">
-        <Education />
-      </div>
-      <div className="section">
-        <Experience />
-      </div>
-      <div className="section">
-        <Projects />
-      </div>
-      <div className="section">
-        <Skills />
-      </div>
+    <div className="app-container">
+      <main className="cv-content-wrapper">
+        <h1 className="app-title">Resume Builder</h1>
+
+        <Section title="Personal Information">
+          <PersonalInfo />
+        </Section>
+
+        <Section title="Education">
+          <Education />
+        </Section>
+
+        <Section title="Experience">
+          <Experience />
+        </Section>
+
+        <Section title="Projects">
+          <Projects />
+        </Section>
+
+        <Section title="Skills">
+          <Skills />
+        </Section>
+      </main>
     </div>
   );
 }
-
-export default App;
